@@ -41,12 +41,12 @@ function App({ marginTopVal }: propsType) {
         <CardFooter className="justify-center items-center gap-16 pt-4">
           <Button
             isIconOnly
-            color={state.isRunning ? "success" : "danger"}
+            color={state.isRunning ? "danger" : "success"}
             onPress={() => {
               dispatch({ type: "TOGGLE_IS_RUNNING" });
             }}
           >
-            {state.isRunning ? <PlayIcon /> : <StopIcon />}
+            {state.isRunning ? <StopIcon /> : <PlayIcon />}
           </Button>
           <Button
             isIconOnly
