@@ -5,6 +5,7 @@ import {
   CardFooter,
   Button,
 } from "@nextui-org/react";
+import { useCountDownTimer } from "./hooks/useCountDownTimer";
 import { useTimerContext } from "./hooks/useTimerContext";
 import { PlayIcon } from "./icons/PlayIcon";
 import { StopIcon } from "./icons/StopIcon";
@@ -16,6 +17,7 @@ type propsType = {
 
 function App({ marginTopVal }: propsType) {
   const { state, dispatch } = useTimerContext();
+  useCountDownTimer();
   return (
     <div className={`mt-${marginTopVal}`}>
       <Card className="w-[360px] h-[360px] mx-auto border-none bg-gradient-to-r from-blue-600 to-violet-600">
@@ -26,7 +28,7 @@ function App({ marginTopVal }: propsType) {
               indicator: "stroke-white",
               track: "stroke-white/10",
             }}
-            value={70}
+            value={state.timerValue}
             maxValue={state.startTime}
             strokeWidth={5}
             showValueLabel={false}
