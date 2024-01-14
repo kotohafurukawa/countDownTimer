@@ -48,7 +48,13 @@ function App({ marginTopVal }: propsType) {
           >
             {state.isRunning ? <PlayIcon /> : <StopIcon />}
           </Button>
-          <Button isIconOnly color="secondary">
+          <Button
+            isIconOnly
+            color="secondary"
+            onClick={() => {
+              dispatch({ type: "RESET" });
+            }}
+          >
             <ResetIcon />
           </Button>
           <Button isIconOnly color="primary">
