@@ -12,7 +12,8 @@ type ACTIONTYPE =
   | { type: "SET_START_TIME"; payload: number }
   | { type: "TOGGLE_IS_RUNNING" }
   | { type: "SET_INPUT_MINUTE"; payload: number }
-  | { type: "SET_INPUT_SECOND"; payload: number };
+  | { type: "SET_INPUT_SECOND"; payload: number }
+  | { type: "RESET" };
 type TimerContextType = {
   state: initialStatesType;
   dispatch: Dispatch<ACTIONTYPE>;
@@ -32,8 +33,8 @@ type TimerContextType = {
  * inputSecondValue - ユーザ入力値（秒）
  */
 const initialStates: initialStatesType = {
-  timerValue: 0,
-  startTime: 0,
+  timerValue: 10,
+  startTime: 10,
   isRunning: false,
   inputMinuteValue: 0,
   inputSecondValue: 0,
@@ -59,6 +60,8 @@ const reducer = (
       return { ...state, inputMinuteValue: action.payload };
     case "SET_INPUT_SECOND":
       return { ...state, inputSecondValue: action.payload };
+    case "RESET":
+      return { ...state, timerValue: state.startTime, isRunning: false };
 
     default:
       throw new Error("InValid action type. Check typo, state and action");
