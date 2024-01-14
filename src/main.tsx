@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <NextUIProvider>
       <TimerProvider>
-        <App />
+        <App marginTopVal="20" />
       </TimerProvider>
       <ThemeSwitcher />
     </NextUIProvider>
