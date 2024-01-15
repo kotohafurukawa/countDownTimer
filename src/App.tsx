@@ -11,15 +11,13 @@ import { PlayIcon } from "./icons/PlayIcon";
 import { StopIcon } from "./icons/StopIcon";
 import { ResetIcon } from "./icons/ResetIcon";
 import { PlusIcon } from "./icons/PlusIcon";
-type propsType = {
-  marginTopVal: string;
-};
+import { DisplayTimer } from "./components/DisplayTimer";
 
-function App({ marginTopVal }: propsType) {
+function App() {
   const { state, dispatch } = useTimerContext();
   useCountDownTimer();
   return (
-    <div className={`mt-${marginTopVal}`}>
+    <>
       <Card className="w-[360px] h-[360px] mx-auto border-none bg-gradient-to-r from-blue-600 to-violet-600">
         <CardBody className="justify-center items-center pb-0">
           <CircularProgress
@@ -34,8 +32,8 @@ function App({ marginTopVal }: propsType) {
             showValueLabel={false}
             aria-label="cont down"
           />
-          <span className="absolute text-4xl font-semibold text-white">
-            {state.timerValue}
+          <span className="absolute text-2xl font-semibold text-white">
+            <DisplayTimer timerValue={state.timerValue} />
           </span>
         </CardBody>
         <CardFooter className="justify-center items-center gap-16 pt-4">
@@ -62,7 +60,7 @@ function App({ marginTopVal }: propsType) {
           </Button>
         </CardFooter>
       </Card>
-    </div>
+    </>
   );
 }
 
