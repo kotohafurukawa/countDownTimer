@@ -10,7 +10,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <NextUIProvider>
       <TimerProvider>
-        <App marginTopVal="20" />
+        <div className="mt-20">
+          <App />
+        </div>
       </TimerProvider>
       <ThemeSwitcher />
     </NextUIProvider>
