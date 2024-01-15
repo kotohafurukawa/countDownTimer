@@ -22,10 +22,12 @@ export const useCountDownTimer = () => {
         clearInterval(id);
       };
     }
+  }, [state.timerValue, state.isRunning, dispatch]);
 
-    // 残り時間が0秒になった時に稼働状態をfalseに切り替え
-    state.isRunning &&
-      state.timerValue <= 0 &&
+  // 残り時間が0秒になった時に稼働状態をfalseに切り替え
+  useEffect(() => {
+    if (state.timerValue <= 0 && state.isRunning) {
       dispatch({ type: "TOGGLE_IS_RUNNING" });
-  }, [state.isRunning, state.timerValue, dispatch]);
+    }
+  }, [state.timerValue, state.isRunning, dispatch]);
 };
