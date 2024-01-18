@@ -4,15 +4,15 @@ type initialStatesType = {
   timerValue: number;
   startTime: number;
   isRunning: boolean;
-  inputMinuteValue: number;
-  inputSecondValue: number;
+  minuteInputValue: string;
+  secondInputValue: string;
 };
 type ACTIONTYPE =
   | { type: "DECREMENT"; payload: 1 }
-  | { type: "SET_START_TIME"; payload: number }
+  | { type: "START_TIMER"; payload: number }
   | { type: "TOGGLE_IS_RUNNING" }
-  | { type: "SET_INPUT_MINUTE"; payload: number }
-  | { type: "SET_INPUT_SECOND"; payload: number }
+  | { type: "SET_INPUT_MINUTE"; payload: string }
+  | { type: "SET_INPUT_SECOND"; payload: string }
   | { type: "RESET" };
 type TimerContextType = {
   state: initialStatesType;
@@ -33,11 +33,11 @@ type TimerContextType = {
  * inputSecondValue - ユーザ入力値（秒）
  */
 const initialStates: initialStatesType = {
-  timerValue: 10,
-  startTime: 10,
+  timerValue: 0,
+  startTime: 0,
   isRunning: false,
-  inputMinuteValue: 0,
-  inputSecondValue: 0,
+  minuteInputValue: "",
+  secondInputValue: "",
 };
 /**
  * TimerContextの更新用関数
@@ -52,14 +52,19 @@ const reducer = (
   switch (action.type) {
     case "DECREMENT":
       return { ...state, timerValue: state.timerValue - action.payload };
-    case "SET_START_TIME":
-      return { ...state, startTime: action.payload };
+    case "START_TIMER":
+      return {
+        ...state,
+        timerValue: action.payload,
+        startTime: action.payload,
+        isRunning: true,
+      };
     case "TOGGLE_IS_RUNNING":
       return { ...state, isRunning: !state.isRunning };
     case "SET_INPUT_MINUTE":
-      return { ...state, inputMinuteValue: action.payload };
+      return { ...state, minuteInputValue: action.payload };
     case "SET_INPUT_SECOND":
-      return { ...state, inputSecondValue: action.payload };
+      return { ...state, secondInputValue: action.payload };
     case "RESET":
       return { ...state, timerValue: state.startTime, isRunning: false };
 
