@@ -1,21 +1,61 @@
+import { useEffect } from "react";
 import {
   CircularProgress,
   Card,
   CardBody,
   CardFooter,
   Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from "@nextui-org/react";
-import { useCountDownTimer } from "./hooks/useCountDownTimer";
 import { useTimerContext } from "./hooks/useTimerContext";
+import { InputMinute } from "./components/InputMinute";
+import { InputSecond } from "./components/InputSecond";
 import { PlayIcon } from "./icons/PlayIcon";
 import { StopIcon } from "./icons/StopIcon";
 import { ResetIcon } from "./icons/ResetIcon";
 import { PlusIcon } from "./icons/PlusIcon";
 import { DisplayTimer } from "./components/DisplayTimer";
+import { toHalfWidth } from "./utils/common";
 
 function App() {
   const { state, dispatch } = useTimerContext();
-  useCountDownTimer();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  useEffect(() => {
+    if (state.isRunning && state.timerValue > 0) {
+      // タイマー稼働
+      const id = setInterval(() => {
+        dispatch({ type: "DECREMENT", payload: 1 });
+      }, 1000);
+
+      // クリーンアップ関数でタイマー停止
+      return () => {
+        clearInterval(id);
+      };
+    }
+  }, [state.timerValue, state.isRunning, dispatch]);
+  // 残り時間が0秒になった時に稼働状態をfalseに切り替え
+  useEffect(() => {
+    if (state.timerValue <= 0 && state.isRunning) {
+      dispatch({ type: "TOGGLE_IS_RUNNING" });
+    }
+  }, [state.timerValue, state.isRunning, dispatch]);
+  const onPressHandler = () => {
+    const minute = Number(toHalfWidth(state.minuteInputValue));
+    const second = Number(toHalfWidth(state.secondInputValue));
+    const convertSecondDate = minute * 60 + second;
+    if (!isNaN(minute) && !isNaN(second)) {
+      dispatch({ type: "START_TIMER", payload: convertSecondDate });
+      dispatch({ type: "SET_INPUT_MINUTE", payload: "0" });
+      dispatch({ type: "SET_INPUT_SECOND", payload: "0" });
+      onOpenChange();
+    }
+  };
+
   return (
     <>
       <Card className="w-[360px] h-[360px] mx-auto border-none bg-gradient-to-r from-blue-600 to-violet-600">
@@ -55,11 +95,34 @@ function App() {
           >
             <ResetIcon />
           </Button>
-          <Button isIconOnly color="primary">
+          <Button isIconOnly color="primary" onPress={onOpen}>
             <PlusIcon />
           </Button>
         </CardFooter>
       </Card>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                タイマー設定
+              </ModalHeader>
+              <ModalBody>
+                <InputMinute />
+                <InputSecond />
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onPressHandler}>
+                  Action
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 }
