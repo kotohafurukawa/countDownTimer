@@ -13,8 +13,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useTimerContext } from "./hooks/useTimerContext";
-import { InputMinute } from "./components/InputMinute";
-import { InputSecond } from "./components/InputSecond";
+import { InputTimer } from "./components/InputTimer";
 import { PlayIcon } from "./icons/PlayIcon";
 import { StopIcon } from "./icons/StopIcon";
 import { ResetIcon } from "./icons/ResetIcon";
@@ -100,7 +99,7 @@ function App() {
           </Button>
         </CardFooter>
       </Card>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
         <ModalContent>
           {(onClose) => (
             <>
@@ -108,8 +107,18 @@ function App() {
                 タイマー設定
               </ModalHeader>
               <ModalBody>
-                <InputMinute />
-                <InputSecond />
+                <InputTimer
+                  name={"minute"}
+                  value={state.minuteInputValue}
+                  label={"Input Minute"}
+                  errorMessage={"60以下の数字を入力してください"}
+                />
+                <InputTimer
+                  name={"second"}
+                  value={state.secondInputValue}
+                  label={"Input Second"}
+                  errorMessage={"60以下の数字を入力してください"}
+                />
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
