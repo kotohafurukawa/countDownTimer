@@ -43,16 +43,34 @@ function App() {
       dispatch({ type: "TOGGLE_IS_RUNNING" });
     }
   }, [state.timerValue, state.isRunning, dispatch]);
-  const onPressHandler = () => {
+  /**
+   * モーダルセットボタン押下時のイベント
+   */
+  const onPressSetHandler = () => {
     const minute = Number(toHalfWidth(state.minuteInputValue));
     const second = Number(toHalfWidth(state.secondInputValue));
     const convertSecondDate = minute * 60 + second;
-    if (!isNaN(minute) && !isNaN(second)) {
+    if (
+      !isNaN(minute) &&
+      !isNaN(second) &&
+      minute <= 60 &&
+      minute >= 0 &&
+      second <= 60 &&
+      second >= 0
+    ) {
       dispatch({ type: "START_TIMER", payload: convertSecondDate });
       dispatch({ type: "SET_INPUT_MINUTE", payload: "0" });
       dispatch({ type: "SET_INPUT_SECOND", payload: "0" });
       onOpenChange();
     }
+  };
+  /**
+   * モーダルキャンセルボタン押下時のイベント
+   */
+  const onPressCancelHandler = () => {
+    dispatch({ type: "SET_INPUT_MINUTE", payload: "0" });
+    dispatch({ type: "SET_INPUT_SECOND", payload: "0" });
+    onOpenChange();
   };
 
   return (
@@ -101,7 +119,7 @@ function App() {
       </Card>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 タイマー設定
@@ -121,11 +139,15 @@ function App() {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
+                <Button
+                  color="danger"
+                  variant="light"
+                  onPress={onPressCancelHandler}
+                >
+                  キャンセル
                 </Button>
-                <Button color="primary" onPress={onPressHandler}>
-                  Action
+                <Button color="primary" onPress={onPressSetHandler}>
+                  セット
                 </Button>
               </ModalFooter>
             </>
