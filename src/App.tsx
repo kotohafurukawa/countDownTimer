@@ -68,8 +68,8 @@ function App() {
    * モーダルキャンセルボタン押下時のイベント
    */
   const onPressCancelHandler = () => {
-    dispatch({ type: "SET_INPUT_MINUTE", payload: "0" });
-    dispatch({ type: "SET_INPUT_SECOND", payload: "0" });
+    dispatch({ type: "SET_INPUT_MINUTE", payload: "" });
+    dispatch({ type: "SET_INPUT_SECOND", payload: "" });
     onOpenChange();
   };
 
