@@ -59,8 +59,8 @@ function App() {
       second >= 0
     ) {
       dispatch({ type: "START_TIMER", payload: convertSecondDate });
-      dispatch({ type: "SET_INPUT_MINUTE", payload: "0" });
-      dispatch({ type: "SET_INPUT_SECOND", payload: "0" });
+      dispatch({ type: "SET_INPUT_MINUTE", payload: "" });
+      dispatch({ type: "SET_INPUT_SECOND", payload: "" });
       onOpenChange();
     }
   };
