@@ -44,6 +44,14 @@ function App() {
     }
   }, [state.timerValue, state.isRunning, dispatch]);
   /**
+   * タイマー登録せずにモーダルを閉じる時のイベント
+   */
+  const modalCloseEvent = () => {
+    dispatch({ type: "SET_INPUT_MINUTE", payload: "" });
+    dispatch({ type: "SET_INPUT_SECOND", payload: "" });
+    onOpenChange();
+  };
+  /**
    * モーダルセットボタン押下時のイベント
    */
   const onPressSetHandler = () => {
@@ -63,14 +71,6 @@ function App() {
       dispatch({ type: "SET_INPUT_SECOND", payload: "" });
       onOpenChange();
     }
-  };
-  /**
-   * モーダルキャンセルボタン押下時のイベント
-   */
-  const onPressCancelHandler = () => {
-    dispatch({ type: "SET_INPUT_MINUTE", payload: "" });
-    dispatch({ type: "SET_INPUT_SECOND", payload: "" });
-    onOpenChange();
   };
 
   return (
@@ -117,9 +117,14 @@ function App() {
           </Button>
         </CardFooter>
       </Card>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="center"
+        onClose={modalCloseEvent}
+      >
         <ModalContent>
-          {() => (
+          {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 タイマー設定
@@ -139,11 +144,7 @@ function App() {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button
-                  color="danger"
-                  variant="light"
-                  onPress={onPressCancelHandler}
-                >
+                <Button color="danger" variant="light" onPress={onClose}>
                   キャンセル
                 </Button>
                 <Button color="primary" onPress={onPressSetHandler}>
